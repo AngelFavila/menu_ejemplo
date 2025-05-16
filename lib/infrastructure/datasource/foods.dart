@@ -42,7 +42,7 @@ class Foods {
     Food(
       id: 4,
       imgPath: 'assets/images/plate4.png',
-      foodName: 'Orange Chicken with Rice',
+      foodName: 'Orange Chicken',
       price: 24.00,
       infoCards: [
         InfoCard(carType.WEIGHT, '350', 'G'),

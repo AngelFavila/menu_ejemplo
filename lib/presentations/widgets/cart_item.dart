@@ -1,4 +1,4 @@
-import 'package:example_menu/domain/models/cart_item.dart';
+import 'package:example_menu/domain/models/cart.dart';
 import 'package:example_menu/domain/models/food.dart';
 import 'package:example_menu/presentations/provider/cart_provider.dart';
 import 'package:example_menu/presentations/widgets/custom_text.dart';
@@ -9,17 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class CartItem extends StatefulWidget with FoodText {
+class BuildCartItem extends StatefulWidget with FoodText {
   final Food food;
   final int quantity;
 
-  CartItem({super.key, required this.food, required this.quantity});
+  BuildCartItem({super.key, required this.food, required this.quantity});
 
   @override
-  State<CartItem> createState() => _BuildCartItemState();
+  State<BuildCartItem> createState() => _BuildCartItemState();
 }
 
-class _BuildCartItemState extends State<CartItem> with CustomText {
+class _BuildCartItemState extends State<BuildCartItem> with CustomText {
   @override
   Widget build(BuildContext context) {
     final cartProvider = context.watch<CartProvider>();
@@ -46,7 +46,9 @@ class _BuildCartItemState extends State<CartItem> with CustomText {
               SizedBox(width: 20.0),
               getFoodInformation(),
               SizedBox(width: 20.0),
-              _buildQuantitySelector(cartProvider.getCartItemById(widget.food.id)),
+              _buildQuantitySelector(
+                cartProvider.getCartItemById(widget.food.id),
+              ),
               IconButton(
                 onPressed: () {
                   cartProvider.removeFromCart(widget.food.id);
@@ -60,11 +62,11 @@ class _BuildCartItemState extends State<CartItem> with CustomText {
     );
   }
 
-  Widget _buildQuantitySelector(CartItem cartItem) {
+  Widget _buildQuantitySelector(Cart cartItem) {
     final cartProvider = context.watch<CartProvider>();
-    
+
     return Container(
-      width: 125.0,
+      width: 65.0,
       height: 40.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(17.0),
@@ -76,7 +78,9 @@ class _BuildCartItemState extends State<CartItem> with CustomText {
           buildQuantityButton(
             icon: Icons.remove,
             color: const Color(0xFF7A9BEE),
-            onTap: (){cartProvider.decreaseQuantitybyId(cartItem.id);},
+            onTap: () {
+              cartProvider.decreaseQuantitybyId(cartItem.id);
+            },
           ),
           getBodyText(
             text: '${cartItem.quantity}',
@@ -87,27 +91,29 @@ class _BuildCartItemState extends State<CartItem> with CustomText {
             icon: Icons.add,
             color: Colors.white,
             iconColor: const Color(0xFF7A9BEE),
-            onTap: (){cartProvider.addToCart(cartItem.id);},
+            onTap: () {
+              cartProvider.addToCart(cartItem.id);
+            },
           ),
         ],
       ),
     );
   }
+
   Expanded getFoodInformation() {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          getFoodName(),
-          SizedBox(height: 5.0),
-          getPrice(),
-        ],
+        children: [getFoodName(), SizedBox(height: 5.0), getPrice()],
       ),
     );
   }
 
   Widget getFoodName() {
-    return widget.getFoodText(widget.food.foodName, fontWeight: FontWeight.bold);
+    return widget.getFoodText(
+      widget.food.foodName,
+      fontWeight: FontWeight.bold,
+    );
   }
 
   Widget getPrice() {

@@ -1,7 +1,7 @@
 import 'package:example_menu/domain/models/food.dart';
 import 'package:example_menu/infrastructure/datasource/foods.dart';
 import 'package:example_menu/presentations/provider/cart_provider.dart';
-import 'package:example_menu/presentations/widgets/build_cart_item.dart';
+import 'package:example_menu/presentations/widgets/cart_item.dart';
 import 'package:example_menu/presentations/widgets/custom_text.dart';
 import 'package:example_menu/presentations/widgets/header.dart';
 import 'package:example_menu/presentations/widgets/template_screen.dart';

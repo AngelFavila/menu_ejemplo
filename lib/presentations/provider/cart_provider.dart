@@ -1,11 +1,11 @@
-import 'package:example_menu/domain/models/cart_item.dart';
+import 'package:example_menu/domain/models/cart.dart';
 import 'package:example_menu/infrastructure/datasource/foods.dart';
 import 'package:flutter/material.dart';
 
 class CartProvider with ChangeNotifier {
-  final List<CartItem> _cartItems = [];
+  final List<Cart> _cartItems = [];
 
-  List<CartItem> get cartItems => _cartItems;
+  List<Cart> get cartItems => _cartItems;
 
   int get cartCount {
     int count = 0;
@@ -15,7 +15,7 @@ class CartProvider with ChangeNotifier {
     return count;
   }
 
-  CartItem getCartItemById(int id) {
+  Cart getCartItemById(int id) {
     // Busca el índice del producto en el carrito
     final index = _cartItems.indexWhere((item) => item.id == id);
     // Si el producto está en el carrito, lo devuelve
@@ -37,7 +37,7 @@ class CartProvider with ChangeNotifier {
       );
     } else {
       // Si el producto no está en el carrito, lo agrega
-      _cartItems.add(CartItem(id: id, quantity: quantity));
+      _cartItems.add(Cart(id: id, quantity: quantity));
     }
     notifyListeners();
   }
@@ -52,7 +52,7 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  void decreaseQuantitybyId(int id,{int quantity = 1}) {
+  void decreaseQuantitybyId(int id, {int quantity = 1}) {
     // Busca el índice del producto en el carrito
     final index = _cartItems.indexWhere((item) => item.id == id);
     // Si el producto está en el carrito y su cantidad es mayor a 1, disminuye la cantidad
@@ -67,7 +67,7 @@ class CartProvider with ChangeNotifier {
   }
 
   // Calcula el subtotal de un producto en el carrito
-  double getCartItemSubtotal(CartItem item) {
+  double getCartItemSubtotal(Cart item) {
     final index = Foods.foods.indexWhere((food) => food.id == item.id);
     // Si el producto esta en la lista de alimentos
     if (index >= 0) {
@@ -80,7 +80,9 @@ class CartProvider with ChangeNotifier {
 
   // Hace la sumatoria de los subtotales de cada producto
   double getCartTotal() {
-    return _cartItems.fold(0.0, (total, item) => total + getCartItemSubtotal(item));
+    return _cartItems.fold(
+      0.0,
+      (total, item) => total + getCartItemSubtotal(item),
+    );
   }
-
 }
